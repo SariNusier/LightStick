@@ -1,23 +1,37 @@
 package sqhive.com.lightstick;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
 import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.hoho.android.usbserial.driver.UsbSerialDriver;
+import com.hoho.android.usbserial.driver.UsbSerialPort;
+import com.hoho.android.usbserial.driver.UsbSerialProber;
+
+import java.io.IOException;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private static String TAG = "Main";
     private static int RESULT_LOAD_IMAGE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +56,36 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_upload) {
+
+            UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+            List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
+            if (availableDrivers.isEmpty()) {
+                return false;
+            }
+            UsbSerialDriver driver = availableDrivers.get(0);
+            UsbDeviceConnection connection = manager.openDevice(driver.getDevice());
+            if (connection == null) {
+                return false;
+            }
+            UsbSerialPort port = driver.getPorts().get(0);
+
+            try {
+                port.open(connection);
+                port.setParameters(115200, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+
+                byte buffer[] = new byte[16];
+                int numBytesRead = port.read(buffer, 1000);
+
+                Toast.makeText(getApplicationContext(), "Read " + numBytesRead + " bytes.",
+                        Toast.LENGTH_LONG).show();
+
+                port.close();
+            } catch (IOException e) {
+                // Deal with it.
+            }
+
             return true;
         }
 
