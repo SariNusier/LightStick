@@ -3,10 +3,10 @@
 /.idea/libraries
 /libs/usbSerialForAndroid/build/
 .DS_Store
+*.iml
 # Built application files
 *.apk
 *.ap_
-
 # Files for the Dalvik VM
 *.dex
 
