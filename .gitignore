@@ -1,3 +1,8 @@
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+libs/usbSerialForAndroid/build/
+.DS_Store
 # Built application files
 *.apk
 *.ap_
