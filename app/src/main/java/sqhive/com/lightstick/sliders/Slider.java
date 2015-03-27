@@ -10,7 +10,7 @@ public class Slider {
     private SliderListenerBackground background;
 
     public Slider() {
-
+        background = new SliderListenerBackground();
     }
 
     /**
@@ -57,6 +57,7 @@ public class Slider {
      */
     public void setPosition(int position) {
         this.position = position;
+        notifyMove();
     }
 
     /**
@@ -90,6 +91,7 @@ public class Slider {
      * Notify all onMove listeners.
      */
     protected void notifyMove() {
+        notifyChange();
         background.callListeners(SliderListener.Type.MOVE_LISTENER);
     }
 

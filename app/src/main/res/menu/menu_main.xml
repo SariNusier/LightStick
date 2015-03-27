@@ -5,4 +5,6 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_upload" android:title="@string/action_upload"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_traceout" android:title="@string/action_traceout"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

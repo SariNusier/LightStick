@@ -26,6 +26,9 @@ import com.hoho.android.usbserial.driver.UsbSerialProber;
 import java.io.IOException;
 import java.util.List;
 
+import sqhive.com.lightstick.sliders.SensorSlider;
+import sqhive.com.lightstick.sliders.SliderListener;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -87,6 +90,28 @@ public class MainActivity extends ActionBarActivity {
             }
 
             return true;
+        } else if (id == R.id.action_traceout) {
+
+            /**
+             * Test sliders.
+             */
+            final SensorSlider slider = new SensorSlider(this);
+            slider.setOnMoveListener(new SliderListener() {
+                public void onMove() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    "Moved: " + slider.getPosition() + ".",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                public void onChange() {
+
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);
